@@ -2,7 +2,7 @@ import markdown2
 import random
 from datetime import datetime
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django import forms
 from . import util
 
@@ -28,12 +28,18 @@ def search(request):
         if page:
             if page in util.list_entries():
                 # if there is an exact correspondence, read the selected page
-                return read(request, page)
+                return redirect('read', name=page)
             # otherwise, print all the entries that contain the given page
-            results = [x for x in util.list_entries() if page in x]
+            results = [x for x in util.list_entries() if page.casefold() in x.casefold()]
             return render(request, "encyclopedia/index.html", {
                 "entries": results
             })
+        else:
+            return render(request, "encyclopedia/error.html", { "message": "Invalid string for search"})
+    else:
+        return render(request, "encyclopedia/error.html", { "message": "Invalid route"})
+
+
 
 def add(request):
     if request.method == "POST":
@@ -43,7 +49,7 @@ def add(request):
         if not util.get_entry(title):
             #if there's no entry with the same title, save it and read it
             util.save_entry(title,content)
-            return read(request, title)
+            return redirect('read', name=title)
         else:
             return render(request, "encyclopedia/error.html", { "message": "the page already exists" })
     #render the page with the form to fill
@@ -55,7 +61,7 @@ def edit(request, title):
         page = request.POST.get('page')
         content = request.POST.get('edited')
         util.save_entry(page,content)
-        return read(request, page)
+        return redirect('read', name=page)
     # render the page with the form to fill, containing the pre-existing test
     content = util.get_entry(title)
     return render(request, "encyclopedia/edit.html", { "title":title, "content":content })
@@ -64,4 +70,4 @@ def random_page(request):
     # pick a random title and read the corrisponding page
     random.seed(datetime.now().timestamp())
     entry = random.choice(util.list_entries())
-    return read(request, entry)
+    return redirect('read', name=entry)
