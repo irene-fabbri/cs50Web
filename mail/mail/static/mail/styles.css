@@ -1,0 +1,24 @@
+textarea {
+    min-height: 400px;
+}
+.timestamp {
+    color: gray;
+    font-size:small;
+}
+
+#emails-view .read {
+    background-color: lightgray;
+}
+
+.mail-box{
+    border: 1px solid black;
+    padding: 1vw;
+    cursor: pointer;
+}
+
+.mail-body {
+    margin: 2vw 0;
+    padding: 1vw;
+    background-color:aliceblue;
+    border-radius: 0.5vw;
+}
