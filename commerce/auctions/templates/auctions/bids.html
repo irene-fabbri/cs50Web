@@ -1,0 +1,59 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>My bids</h2>
+
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Amount</th>
+                    <th>Current Price</th>
+                    <th>Status</th>
+                    <th>Winner</th>
+                    <th>Image</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for item in bid_items %}
+                <tr>
+                    <td><a href="{% url 'listing' item.listing_id.id %}">{{item.listing_id.title}}</a></td>
+                    <td>
+                        {% if item.listing_id.category %}
+                            <a href="{% url 'category' item.listing_id.category %}">{{item.listing_id.get_category_display}}</a>
+                        {% else %}
+                            No category selected
+                        {% endif %}
+                    </td>
+                    <td>{{item.amount | to_eur}}</td>
+                    <td>{{item.listing_id.current_price | to_eur}}</td>
+                    <td>
+                        {% if item.listing_id.status %}
+                            Active
+                        {% else %}
+                            Closed
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if item.listing_id.status %}
+                            -
+                        {% else %}
+                            {% if item.winner %}
+                                You won
+                            {% else %}
+                                You lost
+                            {% endif %}
+                        {% endif%}
+                    </td>
+
+                    <td><img src="{{item.listing_id.image_url}}"></td>
+                </tr>
+            {% empty %}
+                <tr><td>The watchlist is currently empty</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+{% endblock %}

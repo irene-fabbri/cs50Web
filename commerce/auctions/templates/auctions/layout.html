@@ -1,0 +1,105 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}Auctions{% endblock %}</title>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link href="{% static 'auctions/css/styles.css' %}" rel="stylesheet">
+        <!-- page icon -->
+        <link rel="shortcut icon" type="image/x-icon" href="https://cdn-icons-png.flaticon.com/512/628/628750.png">
+
+    </head>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('select');
+            var instances = M.FormSelect.init(elems);
+        });
+    </script>
+    <body>
+
+        <!-- Categories -->
+        <ul id="categories" class="dropdown-content">
+            {% for cat,cat_name in categories %}
+                <li><a href="{% url 'category' cat %}">{{cat_name}}</a></li>
+            {% endfor %}
+        </ul>
+        <nav>
+            <div class="nav-wrapper teal darken-3">
+                <a href="{%url 'index'%}" class="brand-logo">Auctions</a>
+                <ul class="right hide-on-med-and-down">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'index' %}">Active Listings</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'watchlist' user.id %}">Watchlist</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'my_bids' user.id %}">My Bids</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'newlisting' %}">Create Listing</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">Log In</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'register' %}">Register</a>
+                        </li>
+                    {% endif %}
+                        <!-- Dropdown Trigger -->
+                        <li class="nav-item">
+                            <a class="dropdown-trigger" href="{%url 'index'%}" data-target="categories">Category<i class="material-icons right">arrow_drop_down</i></a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <div>
+                {% if user.is_authenticated %}
+                    Signed in as <strong>{{ user.username }}</strong>.
+                {% else %}
+                    Not signed in.
+                {% endif %}
+            </div>
+
+
+        <!-- messages -->
+
+        {% for message in messages %}
+        {% if message.tags == 'error' %}
+            <div class="alert card red lighten-4 red-text text-darken-4" role="alert">
+                <div class="card-content">
+                    <p><i class="material-icons">report</i><span>Errore:</span> {{ message }}</p>
+                </div>
+            </div>
+        {% else %}
+            <div class="alert card green lighten-4 green-text text-darken-4" role="alert">
+                <div class="card-content">
+                    <p><i class="material-icons">check_circle</i> {{ message }} </p>
+                </div>
+            </div>
+        {% endif %}
+        {% endfor %}
+
+        <hr>
+        {% block body %}
+        {% endblock %}
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var elems = document.querySelectorAll('.dropdown-trigger');
+                var instances = M.Dropdown.init(elems);
+            });
+        </script>
+    </body>
+</html>

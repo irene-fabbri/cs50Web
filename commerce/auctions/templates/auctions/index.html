@@ -1,0 +1,38 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+
+    <div class="col s12 m7">
+            {% for listing in listings %}
+                <div class="card horizontal">
+                    <div class="card-image waves-effect waves-block waves-light">
+                        <img src="{{listing.image_url}}"
+                            alt="Immagine di {{listing.title}}" class="card-image-fixed">
+                    </div>
+                    <div class="card-stacked">
+                        <div class="card-content">
+                            <h1 class="card-title grey-text text-darken-4">{{listing.title}}</h1>
+                            <div><b>Price: </b> {{ listing.current_price | to_eur }}</div>
+                            {% if listing.category %}
+                                <div><b>Category:</b> <a href="{% url 'category' listing.category %}">{{ listing.get_category_display }}</a></div>
+                            {% else %}
+                                <div><b>Category:</b> No category selected</div>
+                            {% endif %}
+                            <div><b>Listed by:</b> {{listing.user.username}}</div>
+                            <div><b>Created on:</b> {{listing.date}}</div>
+                            <div class="item-description">
+                                {{listing.description}}
+                            </div>
+
+                        </div>
+                        <div class="card-action">
+                            <a href="{% url 'listing' listing.id %}" class="custom-card">More informations</a>
+                        </div>
+                    </div>
+                </div>
+        {% empty %}
+            <div> No listings available at the moment</div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>500</title>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link href="{% static 'auctions/css/styles.css' %}" rel="stylesheet">
+        <!-- page icon -->
+        <link rel="icon" type="image/x-icon" href="https://cdn-icons-png.flaticon.com/512/628/628750.png">
+
+    </head>
+
+    <body>
+        <h1 class="err-title">Something went wrong</h1>
+        <div class="err-image">
+            <img src="{% static 'auctions/error_cat.png'%}" alt="Immagine di errore">
+            <div class="err-msg">500: Server error</div>
+        </div>
+    </body>
+</html>

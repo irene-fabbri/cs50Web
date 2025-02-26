@@ -1,0 +1,74 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    <h1>Listing: <div class="listing-title">{{listing.title}}</div></h1>
+    <div class="container">
+        <div class="item-image">
+            <img src="{{listing.image_url}}" alt="Immagine di {{listing.title}}">
+        </div>
+        <div>
+            <h2>{{listing.current_price | to_eur}}</h2>
+            <!-- If the auction is closed -->
+            {% if not listing.status %}
+                <span>Auction closed.</span>
+                {% if user == listing.winner %}
+                    <h5>Congratulations! You are the winner of this auction.</h5>
+                {% endif %}
+            {% else%}
+                <span>{{ listing.bid_count }} bid(s) so far.</span>
+                {% if listing.user == user %}
+                    {% if listing.bid_count > 0 %}
+                        <form action="{% url 'close_auction' listing.id %}" name="close_auction_form" method="post">
+                            {% csrf_token %}
+                            <input class="btn orange accent-4" type="submit" value="Close Auction">
+                        </form>
+                    {% endif %}
+                {% else %}
+                <div class="row">
+                    <form id = "bid_form" method="post">
+                        {% csrf_token %}
+                        {{ bid_form.as_p }}
+                        <button class="btn waves-effect waves-light orange accent-4" type="submit" name="bid">Place Bid<i class="material-icons right">monetization_on</i></button>
+                    </form>
+                </div>
+                <div class="row">
+                    <form action="{% url 'watchlist_add' user.id listing.id %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn waves-effect waves-light orange accent-4" type="submit">Add to Whathlist<i class="material-icons right">remove_red_eye</i></button>
+                    </form>
+                </div>
+                {% endif %}
+            {% endif %}
+        </div>
+        <h3>Dettagli:</h3>
+        <div>
+            {{listing.description}}
+        </div>
+        {% if listing.category %}
+            <div><b>Category:</b> <a href="{% url 'category' listing.category %}">{{ listing.get_category_display }}</a></div>
+        {% else %}
+            <div><b>Category:</b> No category selected</div>
+        {% endif %}
+        <div><b>Listed by:</b> {{listing.user.username}}</div>
+        <div><b>Created on:</b> {{listing.date}}</div>
+
+        <h3>Comments</h3>
+        <form id="comment_form" method="post">
+            {% csrf_token %}
+            {{ comment_form.as_p }}
+            <button class="btn orange accent-4" type="submit" name="comment">Send<i class="material-icons right">send</i></button>
+        </form>
+
+        <div class="comment-section">
+            {% for comment in comments %}
+                <div class = "comment-box">
+                    <b>{{comment.user_id.username}}: </b> {{comment.text}}
+                    <div>{{comment.date}}</div>
+                </div>
+            {% empty %}
+                <div>Be the first to add a comment!</div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Whatchlist</h2>
+
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Image</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for item in watchlist_items %}
+                <tr>
+                    <td><a href="{% url 'listing' item.listing_id.id %}">{{item.listing_id.title}}</a></td>
+                    <td>
+                        {% if item.listing_id.category %}
+                            <a href="{% url 'category' item.listing_id.category %}">{{item.listing_id.get_category_display}}</a>
+                        {% else %}
+                            No category selected
+                        {% endif %}
+                    </td>
+                    <td>{{item.listing_id.current_price | to_eur}}</td>
+                    <td><img src="{{item.listing_id.image_url}}"></td>
+                    <td>
+                        <form action="{% url 'watchlist_remove' item.user_id.id item.listing_id.id %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit"  name="action" class="waves-effect waves-light btn orange accent-4">
+                                <i class="material-icons right">delete</i>Remove
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr><td>The watchlist is currently empty</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+{% endblock %}

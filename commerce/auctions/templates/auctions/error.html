@@ -1,0 +1,13 @@
+{% extends "auctions/layout.html" %}
+{% load static%}
+{% block body %}
+
+    <h1 class="err-title">Something went wrong</h1>
+    <div class="err-page">
+        <div class="err-image">
+            <img src="{% static 'auctions/error_cat.png'%}" alt="Immagine di errore">
+            <div class="err-msg">{{ message }}</div>
+        </div>
+    </div>
+
+{% endblock %}
