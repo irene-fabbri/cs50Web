@@ -1,0 +1,107 @@
+.searchbar .form-control {
+    border-width: 0;
+    border-radius: inherit;
+}
+
+.searchbar .input-group-prepend {
+    border-radius: inherit;
+    padding: 2px;
+}
+
+.searchbar {
+    margin: 2px;
+    padding: 5px;
+    border: solid;
+    border-width: 1px;
+    border-color: #dee2e6;
+    border-radius: 1.5rem;
+}
+
+.searchbar:hover {
+    box-shadow: 1px 1px 8px 1px #b9b9b9;
+}
+
+.btn.standard {
+    background-color: #f8f9fa !important;
+    border: 1px solid #f8f9fa !important;
+}
+
+.btn.standard:hover {
+    border-color: #dfe0e1 !important;
+}
+
+.btn.advanced {
+    float: right;
+    color: white;
+    font-weight: bold;
+    background-color: #3d81d1 !important;
+    border: 1px solid #3d81d1 !important;
+}
+
+.btn.advanced:hover {
+    color: white;
+    background-color: #316bae !important;
+    border-color: #dfe0e1 !important;
+}
+
+.logo {
+    padding: 20px;
+}
+
+.adv-title {
+    color: #d93025;
+    margin: 20px;
+}
+
+.specs {
+    display: grid;
+    grid-row-gap: 5px;
+    grid-column-gap: 20px;
+    grid-template-columns: 80%;
+}
+
+.spec-info {
+    min-width: 167px;
+    height: 42px;
+    color: #222222;
+    font-size: 13px;
+    line-height: 16px;
+    vertical-align: middle;
+}
+
+.spec-box input[type=text] {
+    border: 2px solid #dfe0e1;
+    width: 100%;
+}
+
+.spec-box input[type=text]:focus {
+    box-shadow: 0px 1px inset #dfe0e1;
+    outline: 1px solid #3d81d1;
+}
+
+.spec-note {
+    display: none;
+    color: #555555;
+    font-size: 11px;
+    vertical-align: middle;
+}
+
+.spec-note .instruction {
+    font-family: monospace;
+}
+
+@media (min-width: 400px) {
+    .specs {
+        grid-template-columns: 1fr 3fr;
+    }
+}
+
+@media (min-width: 1060px) {
+    .specs {
+        grid-template-columns: 1fr 3fr 2fr;
+    }
+
+    .spec-note {
+        display: inline-block;
+    }
+}
